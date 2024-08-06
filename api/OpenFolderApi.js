@@ -42,14 +42,6 @@
                 throw new Error("Path does not exist");
 
               await f.reveal();
-            },
-            async openFileLink(path) {
-              const f = Cc['@mozilla.org/messenger;1'].createInstance(Components.interfaces.nsIMessenger);
-              try {
-                f.launchExternalURL("file:///" + path);
-              } catch (e) {
-                throw new Error("Invalid path");
-              }
             }
           }
       };

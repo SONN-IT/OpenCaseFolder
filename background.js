@@ -109,7 +109,6 @@ async function SONN_openFile() {
         return
     }
 
-    let enableFileLink = await messenger.LegacyPrefs.getPref("extensions.phoenixqs.enableFileLink");
     let platformInfo = await browser.runtime.getPlatformInfo();
 
     for (let m of file_match) {
@@ -124,10 +123,7 @@ async function SONN_openFile() {
         if(platformInfo.os === "win") {
             fileurl = fileurl.replace(/\//g, '\\');
         }
-        if (enableFileLink && enableFileLink === true) {
-            await browser.OpenFolder.openFileLink(fileurl);
-        } else {
-            await browser.OpenFolder.showItemInFolder(fileurl);
-        }
+
+        await browser.OpenFolder.showItemInFolder(fileurl);
     }
 }
