@@ -103,9 +103,11 @@ async function SONN_openFile() {
     let file_match = subject.match(/\b([RM] ?\d{4,5}(\/[A-Z]{2})?|K ?\d{4,5}|J ?\d{4,5}(\/\d{1,2})?|[EGU] ?\d{4}|S ?\d{3})\b/gi);
     if (file_match == null) {return}
 
-    let filebase = await messenger.LegacyPrefs.getPref("extensions.phoenixqs.filebase");
-    if (filebase == null) {
-        console.log("please setup pref extensions.phoenixqs.filebase");
+    var managedStorage = await browser.storage.managed.get('FileBase')
+    var configFileBase = managedStorage.FileBase;
+
+    if (configFileBase == null) {
+        console.log("Error: Please setup preference for FileBase in policies.json");
         return
     }
 
@@ -116,7 +118,7 @@ async function SONN_openFile() {
         let filetype = f.slice(0, 1);
         let filenum = parseInt(f.slice(1), 10);
         let dirRange = getCaseRange(filetype, filenum);
-        let fileurl = filebase + filetype + "/" +
+        let fileurl = configFileBase + filetype + "/" +
             dirRange[0].toString().padStart(5, '0') + "-" +
             dirRange[1].toString().padStart(5, '0') +
             "/" + filetype + filenum.toString().padStart(5, '0');
