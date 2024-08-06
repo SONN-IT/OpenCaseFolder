@@ -102,13 +102,22 @@ async function SONN_openFile() {
     let subject = message.subject;
     let file_match = subject.match(/\b([RM] ?\d{4,5}(\/[A-Z]{2})?|K ?\d{4,5}|J ?\d{4,5}(\/\d{1,2})?|[EGU] ?\d{4}|S ?\d{3})\b/gi);
     if (file_match == null) {return}
+ 
+    try {
+        managedStorage = await browser.storage.managed.get('FileBase');
+      } catch (e) {
+        console.error(e);
+        return;
+    }
 
-    var managedStorage = await browser.storage.managed.get('FileBase')
     var configFileBase = managedStorage.FileBase;
+
 
     if (configFileBase == null) {
         console.log("Error: Please setup preference for FileBase in policies.json");
         return
+    } else {
+        console.log("Using FileBase: " + configFileBase);
     }
 
     let platformInfo = await browser.runtime.getPlatformInfo();
